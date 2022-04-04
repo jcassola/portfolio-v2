@@ -74,4 +74,34 @@ function sendEmail(body) {
       "Content-Type": "application/json",
     },
   });
+
+  //if(request 200) //succcess message and clean
+  var message = 'Email Sent. Thank you, you will be contacted shortly.';
+  var response = 'success';
+
+  //else (request error) //error message
+  // var message = 'Error. Please, try again later.';
+  // var response = 'danger';
+
+  displayNotification(message, response);
+  cleanForm();
 }
+
+//Notification message
+function displayNotification(message, response){
+  $('#messages').removeClass('hide').addClass(`alert alert-${response} alert-dismissible`).slideDown().show();
+  $('#messages_content').html(`<h4>${message}</h4>`);
+  $('#modal').modal('show');
+
+  $("#messages").show().delay(3000).fadeOut();
+}
+
+//Clean contact form
+function cleanForm(){
+  const inputs = document.querySelectorAll('#name, #email, #subject, #message');
+
+  inputs.forEach(input => {
+    input.value = '';
+  });
+}
+
