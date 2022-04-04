@@ -69,7 +69,7 @@
 function sendEmail(body) {
   fetch("https://jts-email-service.herokuapp.com/api/email-service", {
     method: "POST",
-    body,
+    body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",
     },
