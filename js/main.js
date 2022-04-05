@@ -61,7 +61,7 @@
       recipient: "jcassola96@gmail.com",
       subject: $("#subject").val(),
       body: $("#message").val(),
-    }
+    };
     sendEmail(body);
   });
 })(jQuery);
@@ -73,35 +73,38 @@ function sendEmail(body) {
     headers: {
       "Content-Type": "application/json",
     },
-  });
-
-  //if(request 200) //succcess message and clean
-  var message = 'Email Sent. Thank you, you will be contacted shortly.';
-  var response = 'success';
-
-  //else (request error) //error message
-  // var message = 'Error. Please, try again later.';
-  // var response = 'danger';
-
-  displayNotification(message, response);
-  cleanForm();
+  })
+    .then((res) => {
+      var message = "Email Sent. Thank you, you will be contacted shortly.";
+      var response = "success";
+      displayNotification(message, response);
+      cleanForm();
+    })
+    .catch((err) => {
+      var message = "Error. Please, try again later.";
+      var response = "danger";
+      displayNotification(message, response);
+    });
 }
 
 //Notification message
-function displayNotification(message, response){
-  $('#messages').removeClass('hide').addClass(`alert alert-${response} alert-dismissible`).slideDown().show();
-  $('#messages_content').html(`<h4>${message}</h4>`);
-  $('#modal').modal('show');
+function displayNotification(message, response) {
+  $("#messages")
+    .removeClass("hide")
+    .addClass(`alert alert-${response} alert-dismissible`)
+    .slideDown()
+    .show();
+  $("#messages_content").html(`<h4>${message}</h4>`);
+  $("#modal").modal("show");
 
   $("#messages").show().delay(3000).fadeOut();
 }
 
 //Clean contact form
-function cleanForm(){
-  const inputs = document.querySelectorAll('#name, #email, #subject, #message');
+function cleanForm() {
+  const inputs = document.querySelectorAll("#name, #email, #subject, #message");
 
-  inputs.forEach(input => {
-    input.value = '';
+  inputs.forEach((input) => {
+    input.value = "";
   });
 }
-
