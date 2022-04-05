@@ -56,11 +56,11 @@
     event.preventDefault();
     const body = {
       token: "c14677a7fe2aeb483ba790d22df0d7a1ee0f30fe0287822aa45d84fb6530104e",
-      name: $("#name").val(),
-      address: $("#email").val(),
-      recipient: "jcassola96@gmail.com",
-      subject: $("#subject").val(),
-      body: $("#message").val(),
+      // name: $("#name").val(),
+      // address: $("#email").val(),
+      // recipient: "jcassola96@gmail.com",
+      // subject: $("#subject").val(),
+      // body: $("#message").val(),
     };
     sendEmail(body);
   });
@@ -75,14 +75,22 @@ function sendEmail(body) {
     },
   })
     .then((res) => {
-      var message = "Email Sent. Thank you, you will be contacted shortly.";
-      var response = "success";
-      displayNotification(message, response);
-      cleanForm();
+      if(res.status !== 200){
+        var message = "Error. Please, try again later.";
+        var response = "danger";
+        displayNotification(message, response);
+      }
+      else{
+        var message = "Email Sent. Thank you, you will be contacted shortly.";
+        var response = "success";
+        displayNotification(message, response);
+        cleanForm();
+      }
+
     })
     .catch((err) => {
       var message = "Error. Please, try again later.";
-      var response = "danger";
+      var response = "warning";
       displayNotification(message, response);
     });
 }
