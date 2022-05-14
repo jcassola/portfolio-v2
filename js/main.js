@@ -67,7 +67,7 @@
 })(jQuery);
 
 function sendEmail(body) {
-  fetch("https://jts-email-service.herokuapp.com/api/email-service", {
+  fetch("https://email-service-portfolio.herokuapp.com/api/email-service", {
     method: "POST",
     body: JSON.stringify(body),
     headers: {
