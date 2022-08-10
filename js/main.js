@@ -53,6 +53,12 @@
 
   // Submit form
   $("#contact-me-form").submit(function (event) {
+    new Swal({
+        // width: '80%',
+        title: 'Sending email...',
+        allowOutsideClick: false
+    })
+    Swal.showLoading()
     event.preventDefault();
     const body = {
       token: "c14677a7fe2aeb483ba790d22df0d7a1ee0f30fe0287822aa45d84fb6530104e",
@@ -76,36 +82,29 @@ function sendEmail(body) {
   })
     .then((res) => {
       if(res.status !== 200){
-        var message = "Error. Please, try again later.";
-        var response = "danger";
-        displayNotification(message, response);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error. Please, try again later.',
+          })
       }
       else{
-        var message = "Email Sent. Thank you, you will be contacted shortly.";
-        var response = "success";
-        displayNotification(message, response);
+        Swal.fire(
+            'Email sent!',
+            'Thank you, you will be contacted shortly.',
+            'success'
+          )
         cleanForm();
       }
 
     })
     .catch((err) => {
-      var message = "Error. Please, try again later.";
-      var response = "warning";
-      displayNotification(message, response);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error. Please, try again later.',
+          })
     });
-}
-
-//Notification message
-function displayNotification(message, response) {
-  $("#messages")
-    .removeClass("hide")
-    .addClass(`alert alert-${response} alert-dismissible`)
-    .slideDown()
-    .show();
-  $("#messages_content").html(`<h4>${message}</h4>`);
-  $("#modal").modal("show");
-
-  $("#messages").show().delay(3000).fadeOut();
 }
 
 //Clean contact form
