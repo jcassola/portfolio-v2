@@ -54,26 +54,24 @@
   // Submit form
   $("#contact-me-form").submit(function (event) {
     new Swal({
-        // width: '80%',
-        title: 'Sending email...',
-        allowOutsideClick: false
-    })
-    Swal.showLoading()
+      // width: '80%',
+      title: "Sending email...",
+      allowOutsideClick: false,
+    });
+    Swal.showLoading();
     event.preventDefault();
     const body = {
-      token: "c14677a7fe2aeb483ba790d22df0d7a1ee0f30fe0287822aa45d84fb6530104e",
-      name: $("#name").val(),
-      address: $("#email").val(),
-      recipient: "jcassola96@gmail.com",
+      from: $("#email").val(),
+      to: "jcassola96@gmail.com",
       subject: $("#subject").val(),
-      body: $("#message").val(),
+      text: $("#message").val() + "\nSigned: " + $("#name").val(),
     };
     sendEmail(body);
   });
 })(jQuery);
 
 function sendEmail(body) {
-  fetch("https://email-service-portfolio.herokuapp.com/api/email-service", {
+  fetch("https://mailer-pby8.onrender.com/contact-me", {
     method: "POST",
     body: JSON.stringify(body),
     headers: {
@@ -81,29 +79,27 @@ function sendEmail(body) {
     },
   })
     .then((res) => {
-      if(res.status !== 200){
+      if (res.accepted.length === 0) {
         Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error. Please, try again later.',
-          })
-      }
-      else{
+          icon: "error",
+          title: "Error",
+          text: "Error. Please, try again later.",
+        });
+      } else {
         Swal.fire(
-            'Email sent!',
-            'Thank you, you will be contacted shortly.',
-            'success'
-          )
+          "Email sent!",
+          "Thank you, you will be contacted shortly.",
+          "success"
+        );
         cleanForm();
       }
-
     })
-    .catch((err) => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error. Please, try again later.',
-          })
+    .catch(() => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error. Please, try again later.",
+      });
     });
 }
 
