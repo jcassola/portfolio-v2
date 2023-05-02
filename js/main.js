@@ -78,21 +78,13 @@ function sendEmail(body) {
       "Content-Type": "application/json",
     },
   })
-    .then((res) => {
-      if (res.accepted.length === 0) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Error. Please, try again later.",
-        });
-      } else {
-        Swal.fire(
-          "Email sent!",
-          "Thank you, you will be contacted shortly.",
-          "success"
-        );
-        cleanForm();
-      }
+    .then(() => {
+      Swal.fire(
+        "Email sent!",
+        "Thank you, you will be contacted shortly.",
+        "success"
+      );
+      cleanForm();
     })
     .catch(() => {
       Swal.fire({
