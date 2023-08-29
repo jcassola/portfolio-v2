@@ -54,44 +54,56 @@
   // Submit form
   $("#contact-me-form").submit(function (event) {
     new Swal({
-      // width: '80%',
-      title: "Sending email...",
-      allowOutsideClick: false,
-    });
-    Swal.showLoading();
+        // width: '80%',
+        title: 'Sending email...',
+        allowOutsideClick: false
+    })
+    Swal.showLoading()
     event.preventDefault();
     const body = {
-      from: $("#email").val(),
-      to: "jcassola96@gmail.com",
+      token: "c14677a7fe2aeb483ba790d22df0d7a1ee0f30fe0287822aa45d84fb6530104e",
+      name: $("#name").val(),
+      address: $("#email").val(),
+      recipient: "jcassola96@gmail.com",
       subject: $("#subject").val(),
-      text: $("#message").val() + "\nSigned: " + $("#name").val(),
+      body: $("#message").val(),
     };
     sendEmail(body);
   });
 })(jQuery);
 
 function sendEmail(body) {
-  fetch("https://mailer-pby8.onrender.com/contact-me", {
+  fetch("https://email-service-portfolio.herokuapp.com/api/email-service", {
     method: "POST",
     body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",
     },
   })
-    .then(() => {
-      Swal.fire(
-        "Email sent!",
-        "Thank you, you will be contacted shortly.",
-        "success"
-      );
-      cleanForm();
+    .then((res) => {
+      if(res.status !== 200){
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error. Please, try again later.',
+          })
+      }
+      else{
+        Swal.fire(
+            'Email sent!',
+            'Thank you, you will be contacted shortly.',
+            'success'
+          )
+        cleanForm();
+      }
+
     })
-    .catch(() => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Error. Please, try again later.",
-      });
+    .catch((err) => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error. Please, try again later.',
+          })
     });
 }
 
